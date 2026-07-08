@@ -40,7 +40,7 @@ function renderInline(el, text) {
     last = m.index + m[0].length
     const [, imgAlt, imgUrl, aText, aUrl, code, bold, italic, auto] = m
     if (imgUrl !== undefined) {
-      const url = safeUrl(imgUrl)
+      const url = safeUrl(imgUrl)?.startsWith('https://') ? safeUrl(imgUrl) : null
       if (url) {
         const img = document.createElement('img')
         img.src = url
@@ -174,7 +174,7 @@ export function articleMeta(event) {
   return {
     title: tag('title') || '(untitled)',
     summary: tag('summary') || '',
-    image: safeUrl(tag('image') || '') || null,
+    image: (safeUrl(tag('image') || '') || '').startsWith('https://') ? safeUrl(tag('image')) : null,
     publishedAt: Number(tag('published_at')) || event.created_at,
     identifier: tag('d') || '',
     hashtags: event.tags.filter((t) => t[0] === 't').map((t) => t[1]),
