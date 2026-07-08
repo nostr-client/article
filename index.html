@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="article — nostr-client">
+<meta property="og:description" content="NIP-23 long-form content with a safe zero-dependency markdown renderer. No build.">
+<meta property="og:url" content="https://nostr-client.github.io/article/">
+<meta property="og:image" content="https://nostr-client.github.io/article/og.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nostr-client">
+<meta name="twitter:card" content="summary_large_image">
+<title>article — NIP-23 long-form demo</title>
+<link rel="stylesheet" href="https://nostr-client.github.io/theme/theme.css">
+<style>
+  body { max-width: 42rem; margin: 2.5rem auto; padding: 0 1.2rem 4rem; }
+  h1 { font-size: 1.4rem; } h1 a { text-decoration: none; }
+</style>
+</head>
+<body>
+<h1><a href="https://github.com/nostr-client/article">nostr-client / article</a></h1>
+<p class="nc-muted">A recent long-form article (kind 30023) from the relays,
+markdown rendered safely with zero dependencies:</p>
+
+<nostr-article id="a"></nostr-article>
+
+<script type="module">
+  import './article.js'
+  import { defaultPool } from 'https://nostr-client.github.io/pool/pool.js'
+
+  const events = await defaultPool().list([{ kinds: [30023], limit: 10 }])
+  const good = events.find((ev) => ev.content.length > 800) ?? events[0]
+  if (good) document.getElementById('a').event = good
+</script>
+</body>
+</html>
